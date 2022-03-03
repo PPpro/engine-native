@@ -24,6 +24,7 @@
 ****************************************************************************/
 
 #include "GLES3Wrangler.h"
+#include "platform/openharmony/common/PluginCommon.h"
 
 #if defined(_WIN32) && !defined(ANDROID)
     #define WIN32_LEAN_AND_MEAN 1
@@ -56,16 +57,20 @@ static void *libegl  = nullptr;
 static void *libgles = nullptr;
 
 bool gles3wOpen() {
+    LOGE("qgh cocos gles3wOpen");
     libegl = dlopen("libEGL.so", RTLD_LAZY | RTLD_GLOBAL);
     #if __OHOS__ || __OPENHARMONY__
+    LOGE("qgh cocos libGLESv3");
     libgles = dlopen("libGLESv3.so", RTLD_LAZY | RTLD_GLOBAL);
     #else
+    LOGE("qgh cocos libGLESv2");
     libgles = dlopen("libGLESv2.so", RTLD_LAZY | RTLD_GLOBAL);
     #endif
     return (libegl && libgles);
 }
 
 void *gles3wLoad(const char *proc) {
+    LOGE("qgh cocos %{public}s", proc);
     void *res = nullptr;
     if (eglGetProcAddress) res = reinterpret_cast<void *>(eglGetProcAddress(proc));
     if (!res) res = dlsym(libegl, proc);
