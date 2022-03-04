@@ -20574,13 +20574,16 @@ static bool js_gfx_Device_flushCommands(se::State& s) // NOLINT(readability-iden
     SE_PRECONDITION2( cobj, false, "js_gfx_Device_flushCommands : Invalid Native Object");
     const auto& args = s.args();
     size_t argc = args.size();
+    LOGE("qgh cocos js_gfx_Device_flushCommands test %{public}d", argc);
     do {
         if (argc == 1) {
             HolderType<std::vector<cc::gfx::CommandBuffer *>, true> arg0 = {};
 
+            LOGE("qgh cocos js_gfx_Device_flushCommands 1");
             ok &= sevalue_to_native(args[0], &arg0, s.thisObject());
             if (!ok) { ok = true; break; }
             cobj->flushCommands(arg0.value());
+            LOGE("qgh cocos js_gfx_Device_flushCommands 2");
             return true;
         }
     } while(false);
@@ -20590,11 +20593,13 @@ static bool js_gfx_Device_flushCommands(se::State& s) // NOLINT(readability-iden
             HolderType<cc::gfx::CommandBuffer**, false> arg0 = {};
             HolderType<unsigned int, false> arg1 = {};
 
+            LOGE("qgh cocos js_gfx_Device_flushCommands 3");
             ok &= sevalue_to_native(args[0], &arg0, s.thisObject());
             if (!ok) { ok = true; break; }
             ok &= sevalue_to_native(args[1], &arg1, s.thisObject());
             if (!ok) { ok = true; break; }
             cobj->flushCommands(arg0.value(), arg1.value());
+            LOGE("qgh cocos js_gfx_Device_flushCommands 4");
             return true;
         }
     } while(false);
@@ -20941,12 +20946,14 @@ SE_BIND_FUNC(js_gfx_Device_hasFeature)
 
 static bool js_gfx_Device_initialize(se::State& s) // NOLINT(readability-identifier-naming)
 {
+    LOGE("qgh cocos js_gfx_Device_initialize 1");
     auto* cobj = SE_THIS_OBJECT<cc::gfx::Device>(s);
     SE_PRECONDITION2(cobj, false, "js_gfx_Device_initialize : Invalid Native Object");
     const auto& args = s.args();
     size_t argc = args.size();
     CC_UNUSED bool ok = true;
     if (argc == 1) {
+        LOGE("qgh cocos js_gfx_Device_initialize 2");
         HolderType<cc::gfx::DeviceInfo, true> arg0 = {};
         ok &= sevalue_to_native(args[0], &arg0, s.thisObject());
         SE_PRECONDITION2(ok, false, "js_gfx_Device_initialize : Error processing arguments");
@@ -20954,9 +20961,11 @@ static bool js_gfx_Device_initialize(se::State& s) // NOLINT(readability-identif
         ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
         SE_PRECONDITION2(ok, false, "js_gfx_Device_initialize : Error processing arguments");
         SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
+        LOGE("qgh cocos js_gfx_Device_initialize 3");
         return true;
     }
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);
+        LOGE("qgh cocos js_gfx_Device_initialize 4");
     return false;
 }
 SE_BIND_FUNC(js_gfx_Device_initialize)
@@ -20968,7 +20977,9 @@ static bool js_gfx_Device_present(se::State& s) // NOLINT(readability-identifier
     const auto& args = s.args();
     size_t argc = args.size();
     if (argc == 0) {
+        LOGE("qgh cocos js_gfx_Device_present 0");
         cobj->present();
+        LOGE("qgh cocos js_gfx_Device_present 1");
         return true;
     }
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);

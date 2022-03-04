@@ -6322,7 +6322,9 @@ static bool js_scene_Pass_update(se::State& s) // NOLINT(readability-identifier-
     const auto& args = s.args();
     size_t argc = args.size();
     if (argc == 0) {
+        LOGE("qgh cocos js_scene_Pass_update 1");
         cobj->update();
+        LOGE("qgh cocos js_scene_Pass_update 2");
         return true;
     }
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 0);

@@ -24,6 +24,7 @@
 ****************************************************************************/
 
 #include "GLES3GPUObjects.h"
+#include "platform/openharmony/common/PluginCommon.h"
 
 #define FORCE_DISABLE_VALIDATION 1
 
@@ -82,23 +83,26 @@ void GL_APIENTRY GLES3EGLDebugProc(GLenum source, GLenum type, GLuint id, GLenum
 bool GLES3GPUContext::initialize(GLES3GPUStateCache *stateCache, GLES3GPUConstantRegistry *constantRegistry) {
     _stateCache       = stateCache;
     _constantRegistry = constantRegistry;
-
+    LOGE("qgh cocos GLES3GPUContext::initialize 0");
     if (!gles3wInit()) {
+        LOGE("qgh cocos GLES3GPUContext::initialize -1");
         return false;
     }
-
+    LOGE("qgh cocos GLES3GPUContext::initialize 1");
     EGL_CHECK(eglDisplay = eglGetDisplay(EGL_DEFAULT_DISPLAY));
-
+    LOGE("qgh cocos GLES3GPUContext::initialize 2");
     if (eglDisplay == EGL_NO_DISPLAY) {
+        LOGE("qgh cocos GLES3GPUContext::initialize -3");
         CC_LOG_ERROR("eglGetDisplay() - FAILED.");
         return false;
     }
-
+    LOGE("qgh cocos GLES3GPUContext::initialize 3");
     EGLBoolean success{false};
     EGL_CHECK(success = eglInitialize(eglDisplay, &eglMajorVersion, &eglMinorVersion));
-
+    LOGE("qgh cocos GLES3GPUContext::initialize 4");
     if (!success) {
         CC_LOG_ERROR("eglInitialize() - FAILED.");
+        LOGE("qgh cocos GLES3GPUContext::initialize -4");
         return false;
     }
 
@@ -131,22 +135,27 @@ bool GLES3GPUContext::initialize(GLES3GPUStateCache *stateCache, GLES3GPUConstan
 
     int               numConfig{0};
     vector<EGLConfig> eglConfigs;
-
+    LOGE("qgh cocos GLES3GPUContext::initialize 5");
     EGL_CHECK(success = eglChooseConfig(eglDisplay, defaultAttribs, nullptr, 0, &numConfig));
     if (success) {
+        LOGE("qgh cocos GLES3GPUContext::initialize 6");
         eglConfigs.resize(numConfig);
+        LOGE("qgh cocos GLES3GPUContext::initialize 7");
     } else {
+        LOGE("qgh cocos GLES3GPUContext::initialize -5");
         CC_LOG_ERROR("Query configuration failed.");
         return false;
     }
 
     int count = numConfig;
+    LOGE("qgh cocos GLES3GPUContext::initialize 8");
     EGL_CHECK(success = eglChooseConfig(eglDisplay, defaultAttribs, eglConfigs.data(), count, &numConfig));
     if (!success || !numConfig) {
+        LOGE("qgh cocos GLES3GPUContext::initialize -8");
         CC_LOG_ERROR("eglChooseConfig configuration failed.");
         return false;
     }
-
+    LOGE("qgh cocos GLES3GPUContext::initialize 9");
     EGLint   depth{0};
     EGLint   stencil{0};
     EGLint   sampleBuffers{0};
@@ -227,8 +236,9 @@ bool GLES3GPUContext::initialize(GLES3GPUStateCache *stateCache, GLES3GPUConstan
 
         EGL_CHECK(eglDefaultContext = eglCreateContext(eglDisplay, eglConfig, nullptr, eglAttributes.data()));
     }
-
+    LOGE("qgh cocos GLES3GPUContext::initialize 10");
     if (!eglDefaultContext) {
+        LOGE("qgh cocos GLES3GPUContext::initialize -10");
         CC_LOG_ERROR("Create EGL context failed.");
         return false;
     }
@@ -237,8 +247,9 @@ bool GLES3GPUContext::initialize(GLES3GPUStateCache *stateCache, GLES3GPUConstan
         EGL_WIDTH, 1,
         EGL_HEIGHT, 1,
         EGL_NONE};
+    LOGE("qgh cocos GLES3GPUContext::initialize 11");
     EGL_CHECK(eglDefaultSurface = eglCreatePbufferSurface(eglDisplay, eglConfig, pbufferAttribs));
-
+    LOGE("qgh cocos GLES3GPUContext::initialize 12");
     size_t threadID{std::hash<std::thread::id>{}(std::this_thread::get_id())};
     _sharedContexts[threadID] = eglDefaultContext;
 
@@ -295,13 +306,18 @@ void GLES3GPUContext::makeCurrent(const GLES3GPUSwapchain *drawSwapchain, const 
 }
 
 void GLES3GPUContext::present(const GLES3GPUSwapchain *swapchain) {
+    LOGE("qgh cocos GLES3GPUContext::present 0  swapchain=%{public}p ", swapchain);
     if (_eglCurrentInterval != swapchain->eglSwapInterval) {
+        LOGE("qgh cocos GLES3GPUContext::present _eglCurrentInterval = %{public}p  eglSwapInterval = %{public}p", _eglCurrentInterval, swapchain->eglSwapInterval);
         if (!eglSwapInterval(eglDisplay, swapchain->eglSwapInterval)) {
             CC_LOG_ERROR("eglSwapInterval() - FAILED.");
+            LOGE("eglSwapInterval() - FAILED");
         }
         _eglCurrentInterval = swapchain->eglSwapInterval;
     }
+    LOGE("qgh cocos GLES3GPUContext::present 3  swapchain=%{public}p ", swapchain->eglSurface);
     EGL_CHECK(eglSwapBuffers(eglDisplay, swapchain->eglSurface));
+    LOGE("qgh cocos GLES3GPUContext::present 4  swapchain=%{public}p ", swapchain->eglSurface);
 }
 
 EGLContext GLES3GPUContext::getSharedContext() {

@@ -45,6 +45,7 @@
 #include "GLES3Texture.h"
 #include "states/GLES3GlobalBarrier.h"
 #include "states/GLES3Sampler.h"
+#include "platform/openharmony/common/PluginCommon.h"
 
 // when capturing GLES commands (RENDERDOC_HOOK_EGL=1, default value)
 // renderdoc doesn't support this extension during replay
@@ -77,15 +78,18 @@ bool GLES3Device::doInit(const DeviceInfo & /*info*/) {
     _gpuSamplerRegistry     = CC_NEW(GLES3GPUSamplerRegistry);
     _gpuConstantRegistry    = CC_NEW(GLES3GPUConstantRegistry);
     _gpuFramebufferCacheMap = CC_NEW(GLES3GPUFramebufferCacheMap(_gpuStateCache));
-
+    
+    LOGE("qgh cocos 0 GLES3Device::doInit _gpuContext %{public}p", _gpuContext);
     if (!_gpuContext->initialize(_gpuStateCache, _gpuConstantRegistry)) {
+        LOGE("qgh cocos 1 GLES3Device::doInit _gpuContext %{public}p", _gpuContext);
         destroy();
         return false;
     };
+    LOGE("qgh cocos 2 GLES3Device::doInit _gpuContext %{public}p", _gpuContext);
 
     String extStr = reinterpret_cast<const char *>(glGetString(GL_EXTENSIONS));
     _extensions   = StringUtil::split(extStr, " ");
-
+    LOGE("qgh cocos 3 GLES3Device::doInit");
     _multithreadedSubmission = false;
 
     _features[toNumber(Feature::TEXTURE_FLOAT)]           = true;
@@ -121,6 +125,7 @@ bool GLES3Device::doInit(const DeviceInfo & /*info*/) {
     }
 
     String fbfLevelStr = "NONE";
+    LOGE("qgh cocos 4 GLES3Device::doInit");
     // PVRVFrame has issues on their support
 #if CC_PLATFORM != CC_PLATFORM_WINDOWS
     if (checkExtension("framebuffer_fetch")) {
@@ -147,6 +152,7 @@ bool GLES3Device::doInit(const DeviceInfo & /*info*/) {
         _features[toNumber(Feature::INPUT_ATTACHMENT_BENEFIT)] = _gpuConstantRegistry->mFBF != FBFSupportLevel::NONE;
     }
 #endif
+    LOGE("qgh cocos 5 GLES3Device::doInit");
 
 #if CC_PLATFORM != CC_PLATFORM_WINDOWS || ALLOW_MULTISAMPLED_RENDER_TO_TEXTURE_ON_DESKTOP
     if (checkExtension("multisampled_render_to_texture")) {
@@ -182,7 +188,7 @@ bool GLES3Device::doInit(const DeviceInfo & /*info*/) {
     _renderer = reinterpret_cast<const char *>(glGetString(GL_RENDERER));
     _vendor   = reinterpret_cast<const char *>(glGetString(GL_VENDOR));
     _version  = reinterpret_cast<const char *>(glGetString(GL_VERSION));
-
+    LOGE("qgh cocos 6 GLES3Device::doInit");
     glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, reinterpret_cast<GLint *>(&_caps.maxVertexAttributes));
     glGetIntegerv(GL_MAX_VERTEX_UNIFORM_VECTORS, reinterpret_cast<GLint *>(&_caps.maxVertexUniformVectors));
     glGetIntegerv(GL_MAX_FRAGMENT_UNIFORM_VECTORS, reinterpret_cast<GLint *>(&_caps.maxFragmentUniformVectors));
@@ -194,7 +200,7 @@ bool GLES3Device::doInit(const DeviceInfo & /*info*/) {
     glGetIntegerv(GL_MAX_TEXTURE_SIZE, reinterpret_cast<GLint *>(&_caps.maxTextureSize));
     glGetIntegerv(GL_MAX_CUBE_MAP_TEXTURE_SIZE, reinterpret_cast<GLint *>(&_caps.maxCubeMapTextureSize));
     glGetIntegerv(GL_UNIFORM_BUFFER_OFFSET_ALIGNMENT, reinterpret_cast<GLint *>(&_caps.uboOffsetAlignment));
-
+    LOGE("qgh cocos 7 GLES3Device::doInit");
     if (_gpuConstantRegistry->glMinorVersion) {
         glGetIntegerv(GL_MAX_IMAGE_UNITS, reinterpret_cast<GLint *>(&_caps.maxImageUnits));
         glGetIntegerv(GL_MAX_SHADER_STORAGE_BLOCK_SIZE, reinterpret_cast<GLint *>(&_caps.maxShaderStorageBlockSize));
@@ -208,7 +214,7 @@ bool GLES3Device::doInit(const DeviceInfo & /*info*/) {
         glGetIntegeri_v(GL_MAX_COMPUTE_WORK_GROUP_COUNT, 1, reinterpret_cast<GLint *>(&_caps.maxComputeWorkGroupCount.y));
         glGetIntegeri_v(GL_MAX_COMPUTE_WORK_GROUP_COUNT, 2, reinterpret_cast<GLint *>(&_caps.maxComputeWorkGroupCount.z));
     }
-
+    LOGE("qgh cocos 8 GLES3Device::doInit");
     if (checkExtension("GL_EXT_occlusion_query_boolean")) {
         _caps.supportQuery = true;
     }
@@ -224,9 +230,9 @@ bool GLES3Device::doInit(const DeviceInfo & /*info*/) {
     cmdBuffInfo.type  = CommandBufferType::PRIMARY;
     cmdBuffInfo.queue = _queue;
     _cmdBuff          = createCommandBuffer(cmdBuffInfo);
-
+     LOGE("qgh cocos 9 GLES3Device::doInit");
     _gpuStateCache->initialize(_caps.maxTextureUnits, _caps.maxImageUnits, _caps.maxUniformBufferBindings, _caps.maxShaderStorageBufferBindings, _caps.maxVertexAttributes);
-
+     LOGE("qgh cocos 10 GLES3Device::doInit");
     CC_LOG_INFO("GLES3 device initialized.");
     CC_LOG_INFO("RENDERER: %s", _renderer.c_str());
     CC_LOG_INFO("VENDOR: %s", _vendor.c_str());
@@ -263,13 +269,16 @@ void GLES3Device::acquire(Swapchain *const *swapchains, uint32_t count) {
 }
 
 void GLES3Device::present() {
+    LOGE("qgh cocos GLES3Device::present1  queue = %{public}p", _queue);
     auto *queue   = static_cast<GLES3Queue *>(_queue);
     _numDrawCalls = queue->_numDrawCalls;
     _numInstances = queue->_numInstances;
     _numTriangles = queue->_numTriangles;
-
+    LOGE("qgh cocos GLES3Device::present2  _numDrawCalls = %{public}d  _numInstances= %{public}d  _numTriangles= %{public}d", _numDrawCalls,_numInstances,_numTriangles);
     for (auto *swapchain : _swapchains) {
+        LOGE("qgh cocos GLES3Device::present3  _gpuContext = %{public}p, swapchain= %{public}p", _gpuContext,swapchain);
         _gpuContext->present(swapchain);
+        LOGE("qgh cocos GLES3Device::present4  _gpuContext = %{public}p, swapchain= %{public}p", _gpuContext,swapchain);
     }
 
     // Clear queue stats
