@@ -34,7 +34,7 @@ constexpr inline T *SE_THIS_OBJECT(STATE &s) { // NOLINT(readability-identifier-
 
 #define SE_BIND_PROP_GET(funcName)                                                                    \
     napi_value funcName##Registry(napi_env env, napi_callback_info info) {                            \
-        LOGI("SE_BIND_PROP_GET get %s", #funcName);                                                   \
+        LOGI("SE_BIND_PROP_GET get %{public}s 1", #funcName);                                                   \
         napi_value  _this;                                                                            \
         napi_status status;                                                                           \
         NODE_API_CALL(status, env,                                                                    \
@@ -44,18 +44,22 @@ constexpr inline T *SE_THIS_OBJECT(STATE &s) { // NOLINT(readability-identifier-
         se::State state(obj);                                                                         \
         LOGI("unwrap ptr :%p", obj);                                                                  \
         bool ret = funcName(state);                                                                   \
+        LOGI("SE_BIND_PROP_GET get %{public}s 2", #funcName);                                                   \
         if (!ret) {                                                                                   \
             SE_LOGE("[ERROR] Failed to invoke %s, location: %s:%d\n", #funcName, __FILE__, __LINE__); \
             return nullptr;                                                                           \
         }                                                                                             \
+        LOGI("SE_BIND_PROP_GET get 3");                                                   \
         napi_value retVal;                                                                            \
+        LOGI("SE_BIND_PROP_GET get 4");                                                   \
         se::internal::setReturnValue(state.rval(), retVal);                                           \
+        LOGI("SE_BIND_PROP_GET get 5");                                                   \
         return retVal;                                                                                \
     }
 
 #define SE_BIND_PROP_SET(funcName)                                                                    \
     napi_value funcName##Registry(napi_env env, napi_callback_info info) {                            \
-        LOGI("SE_BIND_PROP_SET set %s", #funcName);                                                   \
+        LOGI("SE_BIND_PROP_SET set %{public}s 1", #funcName);                                                   \
         napi_status status;                                                                           \
         size_t      argc = 1;                                                                         \
         napi_value  args[1];                                                                          \
@@ -73,6 +77,7 @@ constexpr inline T *SE_THIS_OBJECT(STATE &s) { // NOLINT(readability-identifier-
         if (!ret) {                                                                                   \
             SE_LOGE("[ERROR] Failed to invoke %s, location: %s:%d\n", #funcName, __FILE__, __LINE__); \
         }                                                                                             \
+        LOGI("SE_BIND_PROP_SET set %{public}s 2", #funcName);                                                   \
         return nullptr;                                                                               \
     }
 

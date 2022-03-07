@@ -227,8 +227,11 @@ bool Object::isFunction() const {
 bool Object::defineFunction(const char* funcName, napi_callback func) {
     napi_value  fn;
     napi_status status;
+    LOGE("qgh cocos Object::defineFunction 1");
     NODE_API_CALL(status, _env, napi_create_function(_env, funcName, NAPI_AUTO_LENGTH, func, NULL, &fn));
+    LOGE("qgh cocos Object::defineFunction 2");
     NODE_API_CALL(status, _env, napi_set_named_property(_env, _objRef.getValue(_env), funcName, fn));
+    LOGE("qgh cocos Object::defineFunction 3");
     return true;
 }
 

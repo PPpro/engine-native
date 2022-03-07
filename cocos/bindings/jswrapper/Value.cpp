@@ -317,8 +317,11 @@ void Value::setInt32(int32_t v) {
 }
 
 void Value::setUint32(uint32_t v) {
+    LOGE("qgh cocos setUint32 1");
     reset(Type::Number);
+    LOGE("qgh cocos setUint32 2");
     _u._number = static_cast<double>(v);
+    LOGE("qgh cocos setUint32 3");
 }
 
 void Value::setInt16(int16_t v) {

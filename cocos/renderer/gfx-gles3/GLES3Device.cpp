@@ -269,6 +269,7 @@ void GLES3Device::acquire(Swapchain *const *swapchains, uint32_t count) {
 }
 
 void GLES3Device::present() {
+    LOGE("qgh cocos GLES3Device::present1  this = %{public}p", this);
     LOGE("qgh cocos GLES3Device::present1  queue = %{public}p", _queue);
     auto *queue   = static_cast<GLES3Queue *>(_queue);
     _numDrawCalls = queue->_numDrawCalls;

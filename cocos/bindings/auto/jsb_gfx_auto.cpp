@@ -567,12 +567,15 @@ SE_BIND_PROP_SET(js_gfx_DeviceCaps_set_maxCubeMapTextureSize)
 
 static bool js_gfx_DeviceCaps_get_uboOffsetAlignment(se::State& s) // NOLINT(readability-identifier-naming)
 {
+    LOGE("qgh cocos js_gfx_DeviceCaps_get_uboOffsetAlignment 1");
     auto* cobj = SE_THIS_OBJECT<cc::gfx::DeviceCaps>(s);
     SE_PRECONDITION2(cobj, false, "js_gfx_DeviceCaps_get_uboOffsetAlignment : Invalid Native Object");
 
     CC_UNUSED bool ok = true;
     se::Value jsret;
+    LOGE("qgh cocos js_gfx_DeviceCaps_get_uboOffsetAlignment 2");
     ok &= nativevalue_to_se(cobj->uboOffsetAlignment, jsret, s.thisObject() /*ctx*/);
+    LOGE("qgh cocos js_gfx_DeviceCaps_get_uboOffsetAlignment 3");
     s.rval() = jsret;
     SE_HOLD_RETURN_VALUE(cobj->uboOffsetAlignment, s.thisObject(), s.rval());
     return true;
@@ -20823,6 +20826,7 @@ SE_BIND_FUNC(js_gfx_Device_getQueryPoolResults)
 
 static bool js_gfx_Device_getQueue(se::State& s) // NOLINT(readability-identifier-naming)
 {
+    LOGE("qgh cocos js_gfx_Device_getQueue 0");
     auto* cobj = SE_THIS_OBJECT<cc::gfx::Device>(s);
     SE_PRECONDITION2(cobj, false, "js_gfx_Device_getQueue : Invalid Native Object");
     const auto& args = s.args();
@@ -20977,7 +20981,7 @@ static bool js_gfx_Device_present(se::State& s) // NOLINT(readability-identifier
     const auto& args = s.args();
     size_t argc = args.size();
     if (argc == 0) {
-        LOGE("qgh cocos js_gfx_Device_present 0");
+        LOGE("qgh cocos js_gfx_Device_present 0  %{public}p", cobj);
         cobj->present();
         LOGE("qgh cocos js_gfx_Device_present 1");
         return true;

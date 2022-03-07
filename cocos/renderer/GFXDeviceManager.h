@@ -99,7 +99,9 @@ public:
     }
 
     static void destroy() {
+        LOGE("qgh cocos gfx manager destroy 1");
         CC_SAFE_DESTROY(Device::instance);
+        LOGE("qgh cocos gfx manager destroy 2");
     }
 
     static void addSurfaceEventListener() {
