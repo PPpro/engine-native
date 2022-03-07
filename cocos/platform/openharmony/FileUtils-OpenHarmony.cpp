@@ -17,7 +17,7 @@
 #include "platform/openharmony/common/PluginCommon.h"
 
 // #define ASSETS_FOLDER_NAME "/sdcard/cocos/xcsample/"
-#define ASSETS_FOLDER_NAME "/data/accounts/account_0/applications/ohos.example.test/ohos.example.test/"
+#define ASSETS_FOLDER_NAME "/data/app/el1/bundle/public/ohos.example.test/ohos.example.test/"
 #define ASSETS_FOLDER_WRITEABLE_PATH "/data/data/ohos.example.xcomponent1/files/writeable_path"
 //#define ASSETS_FOLDER_WRITEABLE_PATH "/sdcard/cocos/writeable_path"
 
