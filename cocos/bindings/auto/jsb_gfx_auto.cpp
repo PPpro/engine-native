@@ -578,6 +578,7 @@ static bool js_gfx_DeviceCaps_get_uboOffsetAlignment(se::State& s) // NOLINT(rea
     LOGE("qgh cocos js_gfx_DeviceCaps_get_uboOffsetAlignment 3");
     s.rval() = jsret;
     SE_HOLD_RETURN_VALUE(cobj->uboOffsetAlignment, s.thisObject(), s.rval());
+    LOGE("qgh cocos js_gfx_DeviceCaps_get_uboOffsetAlignment 4");
     return true;
 }
 SE_BIND_PROP_GET(js_gfx_DeviceCaps_get_uboOffsetAlignment)
@@ -20865,6 +20866,7 @@ SE_BIND_PROP_GET(js_gfx_Device_getRenderer)
 
 static bool js_gfx_Device_getSampler(se::State& s) // NOLINT(readability-identifier-naming)
 {
+    LOGE("qgh cocos js_gfx_Device_getSampler 1");
     auto* cobj = SE_THIS_OBJECT<cc::gfx::Device>(s);
     SE_PRECONDITION2(cobj, false, "js_gfx_Device_getSampler : Invalid Native Object");
     const auto& args = s.args();
@@ -20872,12 +20874,18 @@ static bool js_gfx_Device_getSampler(se::State& s) // NOLINT(readability-identif
     CC_UNUSED bool ok = true;
     if (argc == 1) {
         HolderType<cc::gfx::SamplerInfo, true> arg0 = {};
+        LOGE("qgh cocos js_gfx_Device_getSampler 2");
         ok &= sevalue_to_native(args[0], &arg0, s.thisObject());
         SE_PRECONDITION2(ok, false, "js_gfx_Device_getSampler : Error processing arguments");
+        LOGE("qgh cocos js_gfx_Device_getSampler 3");
         cc::gfx::Sampler* result = cobj->getSampler(arg0.value());
+        LOGE("qgh cocos js_gfx_Device_getSampler 4");
         ok &= nativevalue_to_se(result, s.rval(), nullptr /*ctx*/);
+        LOGE("qgh cocos js_gfx_Device_getSampler 5");
         SE_PRECONDITION2(ok, false, "js_gfx_Device_getSampler : Error processing arguments");
+        LOGE("qgh cocos js_gfx_Device_getSampler 6");
         SE_HOLD_RETURN_VALUE(result, s.thisObject(), s.rval());
+        LOGE("qgh cocos js_gfx_Device_getSampler 7");
         return true;
     }
     SE_REPORT_ERROR("wrong number of arguments: %d, was expecting %d", (int)argc, 1);

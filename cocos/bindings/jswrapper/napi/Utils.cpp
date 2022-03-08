@@ -99,6 +99,7 @@ void jsToSeArgs(size_t argc, target_value* argv, ValueArray* outArr) {
 }
 
 bool seToJsValue(const Value& v, target_value* outJsVal) {
+    LOGE("qgh cococs Value::Type::Object 0");
     assert(outJsVal != nullptr);
     bool        ret = false;
     napi_status status = napi_ok;
@@ -116,16 +117,22 @@ bool seToJsValue(const Value& v, target_value* outJsVal) {
             ret = (status == napi_ok);
             break;
         case Value::Type::Object:
+            LOGE("qgh cococs Value::Type::Object 1");
             *outJsVal = v.toObject()->_getJSObject();
+            LOGE("qgh cococs Value::Type::Object 2");
             ret       = (outJsVal != nullptr);
+            LOGE("qgh cococs Value::Type::Object 3");
             break;
         case Value::Type::Null:
             NODE_API_CALL(status, ScriptEngine::getEnv(), napi_get_null(ScriptEngine::getEnv(), outJsVal));
             ret = (status == napi_ok);
             break;
         case Value::Type::Undefined:
+            LOGE("qgh cococs Value::Type::Object 10");
             NODE_API_CALL(status, ScriptEngine::getEnv(), napi_get_undefined(ScriptEngine::getEnv(), outJsVal));
+            LOGE("qgh cococs Value::Type::Object 11");
             ret = (status == napi_ok);
+            LOGE("qgh cococs Value::Type::Object 12");
             break;
         case Value::Type::BigInt:
             //NODE_API_CALL(status, ScriptEngine::getEnv(), napi_create_bigint_int64(ScriptEngine::getEnv(), v.toInt64(), outJsVal));
@@ -136,6 +143,7 @@ bool seToJsValue(const Value& v, target_value* outJsVal) {
             assert(false);
             break;
     }
+    LOGE("qgh cococs Value::Type::Object 4");
     //LOGI("type :%d", v.getType());
     return ret;
 }

@@ -87,7 +87,7 @@ constexpr inline T *SE_THIS_OBJECT(STATE &s) { // NOLINT(readability-identifier-
 #define SE_BIND_FUNC(funcName)                                                                          \
     napi_value funcName##Registry(                                                                      \
         napi_env env, napi_callback_info info) {                                                        \
-        LOGI("%s", #funcName);                                                                          \
+        LOGI("SE_BIND_FUNC %{public}s", #funcName);                                                                          \
         napi_status    status;                                                                          \
         bool           ret = false;                                                                     \
         napi_value     _this;                                                                           \
