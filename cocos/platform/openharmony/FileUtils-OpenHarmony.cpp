@@ -16,9 +16,9 @@
 #include <unistd.h>
 #include "platform/openharmony/common/PluginCommon.h"
 
-#define ASSETS_FOLDER_NAME "/data/accounts/account_0/applications/ohos.example.xcomponent1/ohos.example.xcomponent1/"
-//#define ASSETS_FOLDER_NAME "/data/data/ohos.example.xcomponent1/files/"
-#define ASSETS_FOLDER_WRITEABLE_PATH "/data/accounts/account_0/applications/ohos.example.xcomponent1/ohos.example.xcomponent1/writeable_path"
+// #define ASSETS_FOLDER_NAME "/sdcard/cocos/xcsample/"
+#define ASSETS_FOLDER_NAME "/data/accounts/account_0/applications/ohos.example.test/ohos.example.test/"
+#define ASSETS_FOLDER_WRITEABLE_PATH "/data/data/ohos.example.xcomponent1/files/writeable_path"
 //#define ASSETS_FOLDER_WRITEABLE_PATH "/sdcard/cocos/writeable_path"
 
 #ifndef JCLS_HELPER
