@@ -749,6 +749,7 @@ bool Image::initWithPngData(const unsigned char *data, ssize_t dataLen) {
     if (pngPtr) {
         png_destroy_read_struct(&pngPtr, (infoPtr) ? &infoPtr : nullptr, nullptr);
     }
+    ret = true;
     return ret;
 #endif //CC_USE_PNG
 return false;
